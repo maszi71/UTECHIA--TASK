@@ -1,7 +1,5 @@
-interface ListItem {
-  id: string;
-  title: string;
-}
+import { ListItem } from "@/types/ListItem";
+
 
 export const loadItems = (): ListItem[] => {
   const storedItems = localStorage.getItem("items");

@@ -1,10 +1,8 @@
 import React from 'react';
 import Item from '../Item/Item';
+import { ListItem } from '@/types/ListItem';
 
-interface ListItem {
-  id: string;
-  title: string;
-}
+
 
 interface ListProps {
   items: ListItem[];

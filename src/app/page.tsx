@@ -4,11 +4,9 @@ import { useState, useEffect } from "react";
 import List from "../components/ItemList/ItemList";
 import FormComponent from "../components/ItemForm/ItemForm";
 import { loadItems, saveItems } from "@/utils/localstorage";
+import { ListItem } from "@/types/ListItem";
 
-interface ListItem {
-  id: string;
-  title: string;
-}
+
 
 export default function Home() {
   const [items, setItems] = useState<ListItem[]>(loadItems());
