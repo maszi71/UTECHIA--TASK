@@ -1,10 +1,15 @@
-import { ListItem } from '@/types/ListItem';
-import React, { useState } from 'react';
-import { ItemProps } from './Item.type';
+import React, { useState } from "react";
+import { ItemProps } from "./Item.type";
 
-
-
-const Item: React.FC<ItemProps> = ({ item, deleteItem, editItem , onDragStart, onDragOver, onDrop , index }) => {
+const Item: React.FC<ItemProps> = ({
+  item,
+  deleteItem,
+  editItem,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  index,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(item.title);
 
@@ -27,10 +32,13 @@ const Item: React.FC<ItemProps> = ({ item, deleteItem, editItem , onDragStart, o
   };
 
   return (
-    <div className="flex items-center justify-between p-2 border rounded"  draggable
-    onDragStart={(event) => onDragStart(event, index)}
-    onDragOver={(event) => onDragOver(event, index)}
-    onDrop={(event) => onDrop(event, index)}>
+    <div
+      className="flex items-center justify-between p-2 border rounded"
+      draggable
+      onDragStart={(event) => onDragStart(event, index)}
+      onDragOver={(event) => onDragOver(event, index)}
+      onDrop={(event) => onDrop(event, index)}
+    >
       {isEditing ? (
         <input
           className="border p-1 flex-1"
