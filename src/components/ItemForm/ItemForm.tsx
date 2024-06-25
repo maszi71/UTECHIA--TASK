@@ -1,9 +1,8 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
+import { FormProps } from "./ItemForm";
 
-interface FormProps {
-  onSubmit: (title: string) => void;
-}
+
 
 const FormComponent: React.FC<FormProps> = ({ onSubmit }) => {
   const handleSubmit = (values: { title: string }) => {
