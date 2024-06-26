@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import List from "../components/ItemList/ItemList";
 import FormComponent from "../components/ItemForm/ItemForm";
 import { loadItems, saveItems } from "@/utils/localstorage";
 import { ListItem } from "@/types/ListItem";
-
-
+import { addItemToParent } from "@/utils/addNewItem";
+import List from "../components/ItemList/ItemList"
 
 export default function Home() {
   const [items, setItems] = useState<ListItem[]>(loadItems());
@@ -23,11 +22,8 @@ export default function Home() {
   }, [items]);
 
   const addItem = (title: string) => {
-    const newItem: ListItem = {
-      id: new Date().getTime().toString(),
-      title,
-    };
-    setItems((prevItems) => [...prevItems, newItem]);
+    const items = addItemToParent(null, new Date().getTime().toString(), title);
+    setItems((prevItems) => [...items]);
   };
 
   const deleteItem = (id: string) => {
