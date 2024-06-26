@@ -1,6 +1,6 @@
 import React from 'react';
 import Item from '../Item/Item';
-import { ListProps } from './ItemList';
+import { ListProps } from './ItemList.type';
 
 
 
