@@ -1,17 +1,11 @@
 import React, { useState } from "react";
-import  {ItemProps}  from "./Item.type";
-import { addItemToParent } from "@/utils/addNewItem";
-import { loadItems, saveItems } from "@/utils/localstorage";
+import { ItemProps } from "./Item.type";
 import List from "../ItemList/ItemList";
-import FormComponent from "../ItemForm/ItemForm"
-import { removeItemById } from "@/utils/removeItem";
-import { editItemById } from "@/utils/editItem";
-
+import FormComponent from "../ItemForm/ItemForm";
+import { useItemList } from "@/store/ItemListContext";
 
 const Item: React.FC<ItemProps> = ({
   item,
-  deleteItem,
-  editItem,
   onDragStart,
   onDragOver,
   onDrop,
@@ -20,20 +14,18 @@ const Item: React.FC<ItemProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(item.title);
   const [isAdding, setIsAdding] = useState(false);
-  
+  const { addItem, removeItem, editItem } = useItemList();
 
   const handleDelete = () => {
-    removeItemById(item.id);
+    removeItem(item.id);
   };
 
   const handleEdit = () => {
     setIsEditing(true);
-   
   };
 
   const handleSave = () => {
-    editItemById(item.id ,newTitle )
-   // editItem(item.id, newTitle);
+    editItem(item.id, newTitle);
     setIsEditing(false);
   };
 
@@ -46,13 +38,8 @@ const Item: React.FC<ItemProps> = ({
     setIsAdding((item) => !item);
   };
 
-  const addItem = (title: string) => {
-    console.log(title, item.id);
-    const x = addItemToParent(item.id, new Date().getTime().toString(), title);
-    console.log(x, "xxx");
-    saveItems([...x]);
-    console.log(loadItems());
-    // setItems((prevItems) => [...prevItems, ...x]);
+  const addNewItem = (title: string) => {
+    addItem(item.id, title);
   };
 
   return (
@@ -96,15 +83,13 @@ const Item: React.FC<ItemProps> = ({
               </button>
             </>
           )}
-          {isAdding && <FormComponent onSubmit={addItem} />}
+          {isAdding && <FormComponent onSubmit={addNewItem} />}
         </div>
       </div>
       <div className="flex items-center justify-between p-2  rounded">
         {
           <List
             items={item.children}
-            deleteItem={deleteItem}
-            editItem={editItem}
             onDragStart={onDragStart}
             onDragOver={onDragOver}
             onDrop={onDrop}

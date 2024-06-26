@@ -1,42 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FormComponent from "../components/ItemForm/ItemForm";
-import { loadItems, saveItems } from "@/utils/localstorage";
-import { ListItem } from "@/types/ListItem";
-import { addItemToParent } from "@/utils/addNewItem";
 import List from "../components/ItemList/ItemList"
+import {  useItemList } from "@/store/ItemListContext";
 
 export default function Home() {
-  const [items, setItems] = useState<ListItem[]>(loadItems());
   const [draggingItemIndex, setDraggingItemIndex] = useState<number | null>(
     null
   );
 
-  useEffect(() => {
-    setItems(loadItems());
-  }, []);
+  const { itemList, addItem , editItem  } = useItemList();
 
-  useEffect(() => {
-    saveItems(items);
-  }, [items]);
+  console.log(itemList,'itemList')
 
-  const addItem = (title: string) => {
-    const items = addItemToParent(null, new Date().getTime().toString(), title);
-    setItems((prevItems) => [...items]);
+
+  const editSelectedItem = (id: string, newTitle: string) => {
+    editItem(id , newTitle)
   };
 
-  const deleteItem = (id: string) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  };
-
-  const editItem = (id: string, newTitle: string) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, title: newTitle } : item
-      )
-    );
-  };
+  const addNewItem = (title: string) => {
+    addItem(null , title)
+  }
 
   const handleDragStart = (
     event: React.DragEvent<HTMLDivElement>,
@@ -54,13 +39,11 @@ export default function Home() {
 
     if (draggingItemIndex === draggedOverItemIndex) return;
 
-    const itemsCopy = [...items];
+    const itemsCopy = [...itemList];
     const draggingItem = itemsCopy[draggingItemIndex!];
     itemsCopy.splice(draggingItemIndex!, 1);
     itemsCopy.splice(draggedOverItemIndex, 0, draggingItem);
-
     setDraggingItemIndex(draggedOverItemIndex);
-    setItems(itemsCopy);
   };
 
   const handleDrop = (
@@ -73,16 +56,16 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Item List</h1>
-      <FormComponent onSubmit={addItem} />
+      <FormComponent onSubmit={addNewItem} />
       <List
-        items={items}
-        deleteItem={deleteItem}
-        editItem={editItem}
+        items={itemList}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       />
-      {items.length === 0 && <p className="mt-4">No items yet.</p>}
+      {itemList.length === 0 && <p className="mt-4">No items yet.</p>}
+    
+    
     </div>
   );
 }

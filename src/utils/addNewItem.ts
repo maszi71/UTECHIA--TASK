@@ -1,9 +1,9 @@
 import { loadItems } from "./localstorage";
 
 export function addItemToParent(
-  parentId: any,
-  newChildId: any,
-  newChildTitle: any
+  parentId: string | null,
+  newChildId: string,
+  newChildTitle: string
 ) {
   const arr: any = loadItems();
   if (!parentId) {
@@ -18,9 +18,9 @@ export function addItemToParent(
 
   function recursiveAdd(
     parent: any,
-    parentId: any,
-    newChildId: any,
-    newChildTitle: any
+    parentId: string | null,
+    newChildId: string,
+    newChildTitle: string
   ) {
     if (parent.id === parentId) {
       parent.children.push({

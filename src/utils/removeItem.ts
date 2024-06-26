@@ -1,6 +1,6 @@
 import { loadItems } from "./localstorage";
 
-export function removeItemById(itemId: any) {
+export function removeItemById(itemId: string) {
   const arr: any = loadItems();
 
   function recursiveRemove(items: any, itemId: any) {
