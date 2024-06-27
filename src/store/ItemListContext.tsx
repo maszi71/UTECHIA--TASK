@@ -4,6 +4,7 @@ import { addItemToParent } from "@/utils/addNewItem";
 import { editItemById } from "@/utils/editItem";
 import { loadItems } from "@/utils/localstorage";
 import { removeItemById } from "@/utils/removeItem";
+import { reorderItem } from "@/utils/reorderItem";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface ItemListContextType {
@@ -11,6 +12,7 @@ interface ItemListContextType {
   addItem: (parentId : string | null,item: string) => void;
   editItem : (id: string, newTitle: string) => void
   removeItem: (index: string) => void;
+  reOrderItem : (draggingItemIndex: number | null , draggedOverItemIndex : number) => void
 }
 
 const ItemListContext = createContext<ItemListContextType | undefined>(
@@ -47,8 +49,13 @@ export const ItemListProvider = ({ children }: ItemListProviderProps) => {
     setItemList([...items]);
   }
 
+  const reOrderItem = (draggingItemIndex: number | null , draggedOverItemIndex : number)=> {
+    const items = reorderItem(draggingItemIndex , draggedOverItemIndex);
+    setItemList([...items]);
+  }
+
   return (
-    <ItemListContext.Provider value={{ itemList, addItem, removeItem , editItem }}>
+    <ItemListContext.Provider value={{ itemList, addItem, removeItem , editItem ,reOrderItem }}>
       {children}
     </ItemListContext.Provider>
   );

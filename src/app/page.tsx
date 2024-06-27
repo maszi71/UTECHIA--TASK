@@ -2,26 +2,18 @@
 
 import { useState } from "react";
 import FormComponent from "../components/ItemForm/ItemForm";
-import List from "../components/ItemList/ItemList"
-import {  useItemList } from "@/store/ItemListContext";
+import List from "../components/ItemList/ItemList";
+import { useItemList } from "@/store/ItemListContext";
 
 export default function Home() {
   const [draggingItemIndex, setDraggingItemIndex] = useState<number | null>(
     null
   );
 
-  const { itemList, addItem , editItem  } = useItemList();
-
-  console.log(itemList,'itemList')
-
-
-  const editSelectedItem = (id: string, newTitle: string) => {
-    editItem(id , newTitle)
-  };
-
+  const { itemList, addItem, reOrderItem } = useItemList();
   const addNewItem = (title: string) => {
-    addItem(null , title)
-  }
+    addItem(null, title);
+  };
 
   const handleDragStart = (
     event: React.DragEvent<HTMLDivElement>,
@@ -39,11 +31,7 @@ export default function Home() {
 
     if (draggingItemIndex === draggedOverItemIndex) return;
 
-    const itemsCopy = [...itemList];
-    const draggingItem = itemsCopy[draggingItemIndex!];
-    itemsCopy.splice(draggingItemIndex!, 1);
-    itemsCopy.splice(draggedOverItemIndex, 0, draggingItem);
-    setDraggingItemIndex(draggedOverItemIndex);
+    reOrderItem(draggingItemIndex, draggedOverItemIndex);
   };
 
   const handleDrop = (
@@ -64,8 +52,6 @@ export default function Home() {
         onDrop={handleDrop}
       />
       {itemList.length === 0 && <p className="mt-4">No items yet.</p>}
-    
-    
     </div>
   );
 }
